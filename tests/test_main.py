@@ -3,12 +3,12 @@ from main import create_tree, compare_tree
 
 def test_identically():
     assert compare_tree(
-        create_tree('tests/data/1/from'),
-        create_tree('tests/data/1/to')
+        create_tree('tests/data/nested_file/less'),
+        create_tree('tests/data/nested_file/more')
     ) == {}
 
 def test_more_files():
     assert compare_tree(
-        create_tree('tests/data/2/from'),
-        create_tree('tests/data/2/to')
-    ) == {'onigiri': {'ramen': None}}
+        create_tree('tests/data/nested_file/more'),
+        create_tree('tests/data/nested_file/less')
+    ) == {'onigiri': {'ramen': None, 'hacapuri': {}}, 'sake': None, 'sodzu': {}}

@@ -1,1 +1,1 @@
-# Сверка файлов в двух директориях
+# Checking for files between two directories
