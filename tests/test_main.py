@@ -13,6 +13,17 @@ def test_more_files():
         create_tree('tests/data/nested_file/less')
     ) == {'onigiri': {'ramen': None, 'hacapuri': {}}, 'sake': None, 'sodzu': {}}
 
+def test_similar_names():
+    assert compare_tree(
+        create_tree('tests/data/similar_name/file'),
+        create_tree('tests/data/similar_name/folder')
+    ) == {'hinkali': None}
+
+    assert compare_tree(
+        create_tree('tests/data/similar_name/folder'),
+        create_tree('tests/data/similar_name/file')
+    ) == {'hinkali': {}}
+
 def test_tree_pruning():
     assert compare_tree(
         create_tree('tests/data/dont_display/more'),

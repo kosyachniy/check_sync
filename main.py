@@ -39,7 +39,13 @@ def compare_tree(tree_from, tree_to, short=True):
 
             continue
 
+        # Case from={}, to={} → del
+        if tree_from[file] == {} and tree_to[file] == {}:
+            del tree_from[file]
+            continue
+
         # Both are there, it is necessary to check nested files
+        # NOTE: Case from={}, to=None → keep - OK
         if tree_from[file] and tree_to[file]:
             tree_new = compare_tree(tree_from[file], tree_to[file])
 
