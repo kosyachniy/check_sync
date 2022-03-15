@@ -10,11 +10,12 @@ FOLDER_FROM = '/Users/kosyachniy/Desktop/TikTok'
 FOLDER_TO = '/Users/kosyachniy/Desktop/КурсТТ'
 
 
-def create_tree(folder):
+def create_tree(folder, exceptions=None):
     """ Create file tree by path """
     return {
-        file.name: create_tree(file) if file.is_dir() else None
+        file.name: create_tree(file, exceptions) if file.is_dir() else None
         for file in Path(folder).iterdir()
+        if not exceptions or file.name not in exceptions
     }
 
 def compare_tree(tree_from, tree_to, short=True):
@@ -32,6 +33,7 @@ def compare_tree(tree_from, tree_to, short=True):
 
             continue
 
+        # If it is a file
         if tree_from[file] is None:
             # If both are files, so remove it from tracking
             if tree_to[file] is None:
@@ -39,29 +41,31 @@ def compare_tree(tree_from, tree_to, short=True):
 
             continue
 
-        # Case from={}, to={} → del
-        if tree_from[file] == {} and tree_to[file] == {}:
-            del tree_from[file]
+        # If it is folder with no nested elements
+        # NOTE: Case from={}, to=None (different file types) → keep
+        if tree_from[file] == {}:
+            # If the folder names match
+            if tree_to[file] == {}:
+                del tree_from[file]
+
             continue
 
         # Both are there, it is necessary to check nested files
-        # NOTE: Case from={}, to=None → keep - OK
-        if tree_from[file] and tree_to[file]:
-            tree_new = compare_tree(tree_from[file], tree_to[file])
+        tree_new = compare_tree(tree_from[file], tree_to[file], short)
 
-            # All nested elements matched
-            if not tree_new:
-                del tree_from[file]
-                continue
+        # All nested elements matched
+        if not tree_new:
+            del tree_from[file]
+            continue
 
-            # Don't display nested files
-            if short and {
-                k: v and {}
-                for k, v in tree_from[file].items()
-            } == tree_new:
-                tree_from[file] = {}
-            else:
-                tree_from[file] = tree_new
+        # Don't display nested files
+        if short and {
+            k: v and {}
+            for k, v in tree_from[file].items()
+        } == tree_new:
+            tree_from[file] = {}
+        else:
+            tree_from[file] = tree_new
 
     return tree_from
 
