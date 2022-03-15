@@ -1,3 +1,8 @@
+"""
+Find files from one directory that are not in another
+"""
+
+
 from pathlib import Path
 
 
@@ -6,12 +11,15 @@ FOLDER_TO = '/Users/kosyachniy/Desktop/КурсТТ'
 
 
 def create_tree(folder):
+    """ Create file tree by path """
     return {
         file.name: create_tree(file) if file.is_dir() else None
         for file in Path(folder).iterdir()
     }
 
 def compare_tree(tree_from, tree_to):
+    """ Check for files of one file tree in another """
+
     for file in set(tree_from):
         if file not in tree_to:
             continue
@@ -25,6 +33,8 @@ def compare_tree(tree_from, tree_to):
     return tree_from
 
 def print_tree(tree, level=0, indent=4):
+    """ Pretty visualize file tree """
+
     for name in tree:
         print((
             f"{' ' * indent * level}"
