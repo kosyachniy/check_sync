@@ -64,15 +64,17 @@ def compare_tree(tree_from, tree_to, short=True):
             for k, v in tree_from[file].items()
         } == tree_new:
             tree_from[file] = {}
-        else:
-            tree_from[file] = tree_new
+            continue
+
+        # Save unique nested files
+        tree_from[file] = tree_new
 
     return tree_from
 
 def print_tree(tree, level=0, indent=4):
     """ Pretty visualize file tree """
 
-    for name in tree:
+    for name in sorted(tree.keys()):
         print((
             f"{' ' * indent * level}"
             f"{name}"
