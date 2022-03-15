@@ -46,4 +46,5 @@ def print_tree(tree, level=0, indent=4):
             print_tree(tree[name], level+1, indent)
 
 
-print_tree(compare_tree(create_tree(FOLDER_FROM), create_tree(FOLDER_TO)))
+if __name__ == '__main__':
+    print_tree(compare_tree(create_tree(FOLDER_FROM), create_tree(FOLDER_TO)))
