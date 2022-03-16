@@ -45,7 +45,7 @@ def compare_tree(tree_from, tree_to, short=True):
         # NOTE: Case from={}, to=None (different file types) → keep
         if tree_from[file] == {}:
             # If the folder names match
-            if tree_to[file] == {}:
+            if isinstance(tree_to[file], dict):
                 del tree_from[file]
 
             continue

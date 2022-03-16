@@ -29,3 +29,8 @@ def test_tree_pruning():
         create_tree('tests/data/dont_display/more', exceptions=['_']),
         create_tree('tests/data/dont_display/less', exceptions=['_'])
     ) == {'hinkali': {}, 'sake': {}, 'ramen': {'onigiri': {'taiga': None}}}
+
+    assert compare_tree(
+        create_tree('tests/data/dont_display/less', exceptions=['_']),
+        create_tree('tests/data/dont_display/more', exceptions=['_'])
+    ) == {'ramen': {'ramen': None}}
