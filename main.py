@@ -1,13 +1,36 @@
 """
 Find files from one directory that are not in another
+
+Example run:
+env/bin/python main.py \
+    --source tests/data/nested_file/more \
+    --target tests/data/nested_file/less
 """
 
 from pathlib import Path
 from copy import deepcopy
+import argparse
 
 
-FOLDER_FROM = '/Users/kosyachniy/Desktop/TikTok'
-FOLDER_TO = '/Users/kosyachniy/Desktop/КурсТТ'
+def _args():
+    """ Request command line args """
+
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        '--source',
+        type=str,
+        required=True,
+        help='Full path to source',
+    )
+    parser.add_argument(
+        '--target',
+        type=str,
+        required=True,
+        help='Full path to target',
+    )
+
+    return parser.parse_args()
 
 
 def create_tree(folder, exceptions=None):
@@ -84,6 +107,12 @@ def print_tree(tree, level=0, indent=4):
         if tree[name] is not None:
             print_tree(tree[name], level+1, indent)
 
+def main(args: argparse.Namespace):
+    """ Pretty print missing files """
+    tree_source = create_tree(args.source)
+    tree_target = create_tree(args.target)
+    print_tree(compare_tree(tree_source, tree_target))
+
 
 if __name__ == '__main__':
-    print_tree(compare_tree(create_tree(FOLDER_FROM), create_tree(FOLDER_TO)))
+    main(_args())
