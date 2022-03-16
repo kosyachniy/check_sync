@@ -12,6 +12,11 @@ from copy import deepcopy
 import argparse
 
 
+EXCEPTIONS = {
+    '.DS_Store',
+}
+
+
 def _args():
     """ Request command line args """
 
@@ -109,8 +114,8 @@ def print_tree(tree, level=0, indent=4):
 
 def main(args: argparse.Namespace):
     """ Pretty print missing files """
-    tree_source = create_tree(args.source)
-    tree_target = create_tree(args.target)
+    tree_source = create_tree(args.source, exceptions=EXCEPTIONS)
+    tree_target = create_tree(args.target, exceptions=EXCEPTIONS)
     print_tree(compare_tree(tree_source, tree_target))
 
 
