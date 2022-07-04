@@ -34,6 +34,12 @@ def _args():
         required=True,
         help='Full path to target',
     )
+    parser.add_argument(
+        '--full',
+        action='store_true',
+        default=False,
+        help='Display all files',
+    )
 
     return parser.parse_args()
 
@@ -116,7 +122,7 @@ def main(args: argparse.Namespace):
     """ Pretty print missing files """
     tree_source = create_tree(args.source, exceptions=EXCEPTIONS)
     tree_target = create_tree(args.target, exceptions=EXCEPTIONS)
-    print_tree(compare_tree(tree_source, tree_target))
+    print_tree(compare_tree(tree_source, tree_target, not args.full))
 
 
 if __name__ == '__main__':
